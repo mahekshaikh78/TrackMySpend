@@ -27,6 +27,9 @@ TrackMySpend is a personal finance management web application that helps users t
 ```bash
 python manage.py migrate
 python manage.py runserver
+```
+
+Open `http://127.0.0.1:8000/` in your browser.
 
 ## Screenshots
 
