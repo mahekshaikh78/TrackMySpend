@@ -1,0 +1,655 @@
+
+{% extends 'tracker/base.html' %}
+
+{% block head %}
+{% load static %}
+
+<title>Login - TrackMySpend</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #070B1A;
+        color: #F8FAFC;
+        font-family: Arial, sans-serif;
+        overflow-x: hidden;
+    }
+
+
+    /* ==============================
+       BACKGROUND GLOW
+    ============================== */
+
+    body::before {
+        content: "";
+        position: fixed;
+
+        width: 600px;
+        height: 600px;
+
+        background: rgba(99, 102, 241, 0.10);
+
+        border-radius: 50%;
+
+        filter: blur(150px);
+
+        top: -250px;
+        left: -200px;
+
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    body::after {
+        content: "";
+        position: fixed;
+
+        width: 550px;
+        height: 550px;
+
+        background: rgba(139, 92, 246, 0.08);
+
+        border-radius: 50%;
+
+        filter: blur(150px);
+
+        bottom: -250px;
+        right: -200px;
+
+        z-index: -1;
+        pointer-events: none;
+    }
+
+
+    /* ==============================
+       LOGIN CONTAINER
+    ============================== */
+
+    .login-container {
+        min-height: 90vh;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 40px 20px;
+    }
+
+
+    /* ==============================
+       LOGIN CARD
+    ============================== */
+
+    .login-card {
+        width: 100%;
+        max-width: 510px;
+
+        padding: 52px 48px;
+
+        background: #0F172A;
+
+        border: 1px solid #27324A;
+
+        border-radius: 26px;
+
+        box-shadow:
+            0 30px 80px rgba(0, 0, 0, 0.55),
+            0 0 60px rgba(99, 102, 241, 0.05);
+
+        position: relative;
+
+        overflow: hidden;
+    }
+
+
+    /* Top subtle glow */
+
+    .login-card::before {
+        content: "";
+
+        position: absolute;
+
+        width: 350px;
+        height: 120px;
+
+        top: -80px;
+        left: 50%;
+
+        transform: translateX(-50%);
+
+        background: rgba(99, 102, 241, 0.15);
+
+        filter: blur(65px);
+
+        pointer-events: none;
+    }
+
+
+    /* ==============================
+       LOGO ICON
+    ============================== */
+
+    .logo-icon {
+        width: 72px;
+        height: 72px;
+
+        margin: 0 auto 20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #171B35;
+
+        border: 1px solid #4C3F91;
+
+        border-radius: 20px;
+
+        font-size: 32px;
+
+        box-shadow:
+            0 12px 35px rgba(99, 102, 241, 0.12);
+    }
+
+
+    /* ==============================
+       BRAND
+    ============================== */
+
+    .brand-name {
+        margin: 0;
+
+        font-size: 34px;
+
+        font-weight: 700;
+
+        letter-spacing: -1.5px;
+
+        color: #F8FAFC;
+    }
+
+    .brand-name span {
+        background: linear-gradient(
+            90deg,
+            #6366F1,
+            #8B5CF6
+        );
+
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        background-clip: text;
+    }
+
+    .brand-description {
+        margin: 10px 0 0;
+
+        color: #94A3B8;
+
+        font-size: 15px;
+    }
+
+
+    /* ==============================
+       PURPLE ACCENT LINE
+    ============================== */
+
+    .accent-line {
+        width: 48px;
+        height: 4px;
+
+        margin: 28px auto 32px;
+
+        background: linear-gradient(
+            90deg,
+            #6366F1,
+            #8B5CF6
+        );
+
+        border-radius: 20px;
+
+        box-shadow:
+            0 0 18px rgba(99, 102, 241, 0.45);
+    }
+
+
+    /* ==============================
+       LOGIN TITLE
+    ============================== */
+
+    .login-title {
+        margin: 0 0 26px;
+
+        color: #F8FAFC;
+
+        font-size: 26px;
+
+        font-weight: 600;
+
+        letter-spacing: -0.5px;
+    }
+
+
+    /* ==============================
+       FORM
+    ============================== */
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+
+    /* ==============================
+       LABEL
+    ============================== */
+
+    .form-label {
+        display: block;
+
+        margin-bottom: 9px;
+
+        color: #CBD5E1 !important;
+
+        font-size: 14px;
+
+        font-weight: 500;
+    }
+
+
+    /* ==============================
+       INPUT FIELDS
+    ============================== */
+
+    .form-control {
+        width: 100% !important;
+
+        height: 50px;
+
+        padding: 0 15px;
+
+        background-color: #0B1220 !important;
+
+        color: #F8FAFC !important;
+
+        border: 1px solid #27324A !important;
+
+        border-radius: 11px !important;
+
+        outline: none !important;
+
+        font-size: 15px;
+
+        box-shadow: none !important;
+
+        transition:
+            background-color 0.25s ease,
+            border-color 0.25s ease,
+            box-shadow 0.25s ease;
+    }
+
+
+    /* Placeholder */
+
+    .form-control::placeholder {
+        color: #64748B !important;
+        opacity: 1;
+    }
+
+
+    /* Focus */
+
+    .form-control:focus {
+        background-color: #0D1528 !important;
+
+        color: #F8FAFC !important;
+
+        border-color: #6366F1 !important;
+
+        outline: none !important;
+
+        box-shadow:
+            0 0 0 3px rgba(99, 102, 241, 0.12),
+            0 0 18px rgba(99, 102, 241, 0.08) !important;
+    }
+
+
+    /* ==============================
+       CHROME AUTOFILL FIX
+    ============================== */
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+
+        -webkit-text-fill-color: #F8FAFC !important;
+
+        -webkit-box-shadow:
+            0 0 0 1000px #0B1220 inset !important;
+
+        box-shadow:
+            0 0 0 1000px #0B1220 inset !important;
+
+        border: 1px solid #27324A !important;
+    }
+
+
+    /* Autofill when focused */
+
+    input:-webkit-autofill:focus {
+
+        -webkit-box-shadow:
+            0 0 0 1000px #0D1528 inset,
+            0 0 0 3px rgba(99, 102, 241, 0.12) !important;
+
+        box-shadow:
+            0 0 0 1000px #0D1528 inset,
+            0 0 0 3px rgba(99, 102, 241, 0.12) !important;
+
+        border-color: #6366F1 !important;
+    }
+
+
+    /* ==============================
+       LOGIN BUTTON
+    ============================== */
+
+    .login-button {
+        width: 100%;
+
+        height: 50px;
+
+        margin-top: 5px;
+
+        border: none;
+
+        border-radius: 11px;
+
+        background: linear-gradient(
+            135deg,
+            #6366F1,
+            #8B5CF6
+        );
+
+        color: #FFFFFF;
+
+        font-size: 15px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            filter 0.25s ease;
+    }
+
+    .login-button:hover {
+        transform: translateY(-2px);
+
+        filter: brightness(1.08);
+
+        box-shadow:
+            0 12px 30px rgba(99, 102, 241, 0.30);
+    }
+
+    .login-button:active {
+        transform: translateY(0);
+    }
+
+
+    /* ==============================
+       ERROR MESSAGE
+    ============================== */
+
+    #errorMessage {
+        min-height: 20px;
+
+        margin: 12px 0 0;
+
+        color: #F87171 !important;
+
+        font-size: 13px;
+
+        text-align: center;
+    }
+
+
+    /* ==============================
+       REGISTER SECTION
+    ============================== */
+
+    .register-text {
+        margin-top: 28px;
+
+        padding-top: 22px;
+
+        border-top: 1px solid #202A40;
+
+        color: #94A3B8;
+
+        font-size: 14px;
+    }
+
+    .register-text a {
+        color: #818CF8;
+
+        font-weight: 600;
+
+        text-decoration: none;
+
+        transition: color 0.2s ease;
+    }
+
+    .register-text a:hover {
+        color: #A78BFA;
+    }
+
+
+    /* ==============================
+       MOBILE
+    ============================== */
+
+    @media (max-width: 600px) {
+
+        .login-container {
+            padding: 25px 15px;
+        }
+
+        .login-card {
+            max-width: 450px;
+
+            padding: 42px 25px;
+
+            border-radius: 22px;
+        }
+
+        .brand-name {
+            font-size: 30px;
+        }
+
+        .login-title {
+            font-size: 24px;
+        }
+    }
+
+
+    @media (max-width: 380px) {
+
+        .login-card {
+            padding: 35px 20px;
+        }
+
+        .logo-icon {
+            width: 64px;
+            height: 64px;
+
+            font-size: 28px;
+        }
+
+        .brand-name {
+            font-size: 27px;
+        }
+
+        .brand-description {
+            font-size: 14px;
+        }
+    }
+
+    .show-password {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    color: #9CA8BC;
+}
+
+.show-password input {
+    width: 15px;
+    height: 15px;
+    accent-color: #6366F1;
+    cursor: pointer;
+}
+
+.show-password label {
+    cursor: pointer;
+}
+
+</style>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <!-- Logo -->
+
+        <div class="text-center">
+
+            <div class="logo-icon">
+                💰
+            </div>
+
+            <h1 class="brand-name">
+                TrackMy<span>Spend</span>
+            </h1>
+
+            <p class="brand-description">
+                Track your expenses, manage your money.
+            </p>
+
+        </div>
+
+
+        <!-- Accent -->
+
+        <div class="accent-line"></div>
+
+
+        <!-- Login Title -->
+
+        <h2 class="login-title">
+            Welcome back
+        </h2>
+
+
+        <!-- Login Form -->
+
+        <form id="loginForm">
+
+            <div class="form-group">
+
+                <label
+                    for="username"
+                    class="form-label"
+                >
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    autocomplete="username"
+                    required
+                />
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label
+                    for="password"
+                    class="form-label"
+                >
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                />
+
+            </div>
+            <div class="show-password">
+    <input type="checkbox" id="showPassword">
+    <label for="showPassword">Show Password</label>
+</div>
+
+
+            <button
+                type="submit"
+                class="login-button"
+            >
+                Login
+            </button>
+
+        </form>
+
+
+        <!-- Error -->
+
+        <p id="errorMessage"></p>
+
+
+        <!-- Register -->
+
+        <div class="register-text text-center">
+
+            Don't have an account?
+
+            <a href="/register_page/">
+                Register
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="{% static 'tracker/js/login.js' %}"></script>
+
+{% endblock %}
+
+

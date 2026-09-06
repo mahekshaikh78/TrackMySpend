@@ -1,0 +1,516 @@
+{% extends 'tracker/base.html' %}
+
+{% block head %}
+<title>TrackMySpend</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #070B1A;
+        color: #F8FAFC;
+        font-family: Arial, sans-serif;
+        overflow-x: hidden;
+    }
+
+    /* ==============================
+       BACKGROUND GLOW
+    ============================== */
+
+    body::before {
+        content: "";
+        position: fixed;
+        width: 600px;
+        height: 600px;
+        background: rgba(99, 102, 241, 0.12);
+        border-radius: 50%;
+        filter: blur(150px);
+        top: -250px;
+        left: -200px;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    body::after {
+        content: "";
+        position: fixed;
+        width: 550px;
+        height: 550px;
+        background: rgba(139, 92, 246, 0.10);
+        border-radius: 50%;
+        filter: blur(150px);
+        bottom: -250px;
+        right: -200px;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    /* ==============================
+       MAIN CONTAINER
+    ============================== */
+
+    .welcome-container {
+        min-height: 90vh;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 50px 20px;
+    }
+
+    /* ==============================
+       MAIN CARD
+    ============================== */
+
+    .welcome-card {
+        width: 100%;
+        max-width: 950px;
+
+        padding: 75px 60px;
+
+        text-align: center;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(17, 24, 39, 0.96),
+                rgba(15, 20, 35, 0.96)
+            );
+
+        border: 1px solid rgba(99, 102, 241, 0.20);
+
+        border-radius: 28px;
+
+        box-shadow:
+            0 30px 80px rgba(0, 0, 0, 0.55),
+            0 0 80px rgba(99, 102, 241, 0.05);
+
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Top subtle glow */
+
+    .welcome-card::before {
+        content: "";
+
+        position: absolute;
+
+        width: 350px;
+        height: 120px;
+
+        top: -80px;
+        left: 50%;
+
+        transform: translateX(-50%);
+
+        background: rgba(99, 102, 241, 0.18);
+
+        filter: blur(60px);
+
+        pointer-events: none;
+    }
+
+    /* ==============================
+       LOGO
+    ============================== */
+
+    .logo-icon {
+        width: 78px;
+        height: 78px;
+
+        margin: 0 auto 22px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(99, 102, 241, 0.18),
+                rgba(139, 92, 246, 0.10)
+            );
+
+        border: 1px solid rgba(139, 92, 246, 0.35);
+
+        border-radius: 22px;
+
+        font-size: 35px;
+
+        box-shadow:
+            0 15px 40px rgba(99, 102, 241, 0.15);
+
+        position: relative;
+        z-index: 1;
+    }
+
+    /* ==============================
+       SMALL ACCENT LINE
+    ============================== */
+
+    .accent-line {
+        width: 45px;
+        height: 3px;
+
+        margin: 0 auto 28px;
+
+        background: linear-gradient(
+            90deg,
+            #6366F1,
+            #8B5CF6
+        );
+
+        border-radius: 20px;
+
+        box-shadow:
+            0 0 15px rgba(99, 102, 241, 0.5);
+    }
+
+    /* ==============================
+       HEADING
+    ============================== */
+
+    .welcome-card h1 {
+        margin: 0 0 20px;
+
+        font-size: clamp(42px, 7vw, 68px);
+
+        font-weight: 700;
+
+        letter-spacing: -2.5px;
+
+        color: #F8FAFC;
+
+        position: relative;
+    }
+
+    .welcome-card h1 span {
+        background: linear-gradient(
+            90deg,
+            #6366F1,
+            #8B5CF6
+        );
+
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        background-clip: text;
+    }
+
+    /* ==============================
+       DESCRIPTION
+    ============================== */
+
+    .welcome-card p {
+        max-width: 650px;
+
+        margin: 0 auto 42px;
+
+        color: #94A3B8;
+
+        font-size: 18px;
+
+        line-height: 1.7;
+    }
+
+    /* ==============================
+       BUTTONS
+    ============================== */
+
+    .button-group {
+        display: flex;
+
+        justify-content: center;
+
+        gap: 14px;
+
+        flex-wrap: wrap;
+    }
+
+    .btn-login,
+    .btn-register {
+        min-width: 145px;
+
+        padding: 14px 32px;
+
+        border-radius: 12px;
+
+        font-size: 16px;
+
+        font-weight: 600;
+
+        text-decoration: none;
+
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            background 0.25s ease,
+            border-color 0.25s ease;
+
+        cursor: pointer;
+    }
+
+    /* ==============================
+       LOGIN BUTTON
+    ============================== */
+
+    .btn-login {
+        color: #FFFFFF;
+
+        background: linear-gradient(
+            135deg,
+            #6366F1,
+            #8B5CF6
+        );
+
+        border: 1px solid rgba(139, 92, 246, 0.7);
+
+        box-shadow:
+            0 10px 25px rgba(99, 102, 241, 0.22);
+    }
+
+    .btn-login:hover {
+        transform: translateY(-3px);
+
+        box-shadow:
+            0 15px 35px rgba(99, 102, 241, 0.35);
+
+        background: linear-gradient(
+            135deg,
+            #7C83F5,
+            #9B6EF7
+        );
+    }
+
+    /* ==============================
+       REGISTER BUTTON
+    ============================== */
+
+    .btn-register {
+        color: #E2E8F0;
+
+        background: rgba(255, 255, 255, 0.02);
+
+        border: 1px solid #27324A;
+
+        backdrop-filter: blur(10px);
+    }
+
+    .btn-register:hover {
+        transform: translateY(-3px);
+
+        color: #FFFFFF;
+
+        background: rgba(99, 102, 241, 0.08);
+
+        border-color: rgba(99, 102, 241, 0.55);
+
+        box-shadow:
+            0 10px 25px rgba(99, 102, 241, 0.10);
+    }
+
+    /* ==============================
+       FEATURES
+    ============================== */
+
+    .features {
+        display: flex;
+
+        justify-content: center;
+
+        gap: 42px;
+
+        margin-top: 55px;
+
+        flex-wrap: wrap;
+    }
+
+    .feature {
+        display: flex;
+
+        align-items: center;
+
+        color: #94A3B8;
+
+        font-size: 14px;
+    }
+
+    .feature span {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        width: 20px;
+        height: 20px;
+
+        margin-right: 8px;
+
+        color: #A5B4FC;
+
+        background: rgba(99, 102, 241, 0.12);
+
+        border: 1px solid rgba(99, 102, 241, 0.20);
+
+        border-radius: 50%;
+
+        font-size: 12px;
+
+        font-weight: bold;
+    }
+
+    /* ==============================
+       MOBILE
+    ============================== */
+
+    @media (max-width: 600px) {
+
+        .welcome-container {
+            min-height: 90vh;
+
+            padding: 25px 15px;
+        }
+
+        .welcome-card {
+            padding: 50px 25px;
+
+            border-radius: 22px;
+        }
+
+        .logo-icon {
+            width: 70px;
+            height: 70px;
+
+            font-size: 31px;
+        }
+
+        .welcome-card h1 {
+            font-size: 42px;
+
+            letter-spacing: -1.5px;
+        }
+
+        .welcome-card p {
+            font-size: 16px;
+
+            line-height: 1.6;
+        }
+
+        .button-group {
+            flex-direction: column;
+
+            width: 100%;
+        }
+
+        .btn-login,
+        .btn-register {
+            width: 100%;
+        }
+
+        .features {
+            flex-direction: column;
+
+            gap: 18px;
+
+            align-items: center;
+
+            margin-top: 42px;
+        }
+    }
+
+    /* ==============================
+       SMALL DEVICES
+    ============================== */
+
+    @media (max-width: 380px) {
+
+        .welcome-card {
+            padding: 40px 20px;
+        }
+
+        .welcome-card h1 {
+            font-size: 36px;
+        }
+
+        .welcome-card p {
+            font-size: 15px;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="welcome-container">
+
+    <div class="welcome-card">
+
+        <!-- Logo -->
+
+        <div class="logo-icon">
+            💰
+        </div>
+
+        <!-- Accent -->
+
+        <div class="accent-line"></div>
+
+        <!-- Heading -->
+
+        <h1>
+            TrackMy<span>Spend</span>
+        </h1>
+
+        <!-- Description -->
+
+        <p>
+            Take control of your expenses, understand your spending,
+            and manage your money smarter.
+        </p>
+
+        <!-- Buttons -->
+
+        <div class="button-group">
+
+            <a href="/login_page/" class="btn-login">
+                Login
+            </a>
+
+            <a href="/register_page/" class="btn-register">
+                Register
+            </a>
+
+        </div>
+
+        <!-- Features -->
+
+        <div class="features">
+
+            <div class="feature">
+                <span>✓</span>
+                Track Expenses
+            </div>
+
+            <div class="feature">
+                <span>✓</span>
+                Manage Budget
+            </div>
+
+            <div class="feature">
+                <span>✓</span>
+                Analyze Spending
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
