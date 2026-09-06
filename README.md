@@ -27,3 +27,14 @@ TrackMySpend is a personal finance management web application that helps users t
 ```bash
 python manage.py migrate
 python manage.py runserver
+
+## Screenshots
+
+### Landing Page
+![Landing Page](screenshots/landing.png)
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Transaction History
+![Transaction History](screenshots/transactions.png)
